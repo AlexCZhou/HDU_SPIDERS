@@ -61,7 +61,7 @@ def parse_discuss_page(Pro_ID):
     for mat in match:
         tags += re.findall(match[mat], discuss_text)
     discuss_text = str(Pro_ID) + ':\n' + discuss_text + '\nEND OF ' + str(Pro_ID) + '.\n\n'
-    page = get_page(Pro_ID)
+    page = get_page(int(Pro_ID))
     write_to_discuss(page, discuss_text)
     return set(tags) # 利用set去重
 
@@ -156,4 +156,6 @@ def specify_problem(Pro_ID):
     parse_discuss_page(Pro_ID)
       
 if __name__ == "__main__":  
-    specify_problem(1000)
+    #input_problem()
+    #specify_problem(1000)
+    main()
