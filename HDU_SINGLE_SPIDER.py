@@ -8,24 +8,6 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from requests.exceptions import RequestException
-
-def parse_Problem_Archive(text):
-    soup = BeautifulSoup(text, 'lxml')
-    items = soup.find_all(align='center', height='22')
-    for i in range(1, len(items)):
-        Pro_ID = items[i].td.text #items[i]中第一个td的文本内容
-        tags = parse_discuss_page(Pro_ID) 
-        tags = ','.join(tags)
-        if len(tags) == 0:
-            continue
-        data = {
-            'Pro_ID': Pro_ID,
-            'Title': items[i].a.text.strip(),
-            'Tags': tags, 
-            'Ratio': items[i].td.next_sibling.next_sibling.text[:6],
-            'Link': 'http://acm.hdu.edu.cn/showproblem.php?pid=' + Pro_ID
-        }
-        yield data
         
 def get_one_page(url):
     try:
@@ -64,7 +46,7 @@ def parse_discuss_page(Pro_ID):
     page = get_page(int(Pro_ID))
     write_to_discuss(page, discuss_text)
     return set(tags) # 利用set去重
-
+        
 def create_dir():
     path = 'OUTPUT'
     if not os.path.exists(path):
@@ -80,21 +62,6 @@ def write_to_discuss(page, text):
     filename = 'OUTPUT/PAGE' + str(page) + '.txt'
     with open(filename, 'a', encoding='utf-8') as f:
         f.write(text)
-        
-def write_to_file(item):
-    with open('OUTPUT/HDU题目类型.txt', 'a', encoding='utf-8') as f:
-        f.write(json.dumps(item, ensure_ascii=False)+'\n')
-def write_to_json(content):
-    with open('OUTPUT/HDU题目类型.json', 'a', encoding='utf-8') as f:
-        f.write(json.dumps(content, ensure_ascii=False)+'\n')
-def write_to_csv(content): 
-    with open('OUTPUT/HDU题目类型.csv', 'a', encoding='utf-8-sig', newline='') as f:
-        #newline=''取消自动换行
-        #注意：utf-8还是乱码，得设置为utf-8-sig
-        fieldnames = ['Pro_ID', 'Title', 'Tags', 'Ratio', 'Link']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(content)
         
 def create_database(database):
     db = pymysql.connect(host='localhost',user='root',password='123456',port=3306)
@@ -125,29 +92,45 @@ def write_to_sql(database, table, data):
         print('Failed')
         db.rollback()
     db.close() 
+
+def parse_showproblem(Pro_ID):
+    url = 'http://acm.hdu.edu.cn/showproblem.php?pid=' + str(Pro_ID)
+    text = get_one_page(url)
+    soup = BeautifulSoup(text, 'lxml')
+    title = soup.select('tr > td > h1')[0]
+    #Total Submission(s): 938749    Accepted Submission(s): 280141
+    pattern = re.compile('\(s\): (\d+).*?\(s\): (\d+)')
+    Submission = re.search(pattern, text)
+    Ratio = int(Submission[2].strip()) / int(Submission[1].strip()) * 100
+    tags = parse_discuss_page(Pro_ID)
+    tags = ','.join(tags)
+    data = {
+        'Pro_ID': Pro_ID,
+        'Title': title.string.strip(),
+        'Tags': tags, 
+        'Ratio': '%.2f%%' % Ratio,
+        'Link': 'http://acm.hdu.edu.cn/showproblem.php?pid=' + str(Pro_ID)
+    }
+    return data    
+
+def input_problem():
+    Pro_ID = input("请输入所要查询的题号:")
+    while(Pro_ID.isdigit()==False | len(Pro_ID)!=4):
+        Pro_ID = input("请输入正确题号:")
+    data = parse_showproblem(eval(Pro_ID))
+    print(data)
+    write_to_sql(database='spiders', table='hdu', data=data)   
     
-def main():
-    browser = webdriver.Chrome()
-    #Problem Archive页面经动态渲染，requests无法爬取，于是利用selenum模拟浏览器操作，实现所见即所得
-    create_dir()
-    for i in range(1,2):
-        url = 'http://acm.hdu.edu.cn/listproblem.php?vol=' + str(i)
-        browser.get(url)
-        content = []
-        text = browser.page_source
-        print('正在爬取第', i, '页')
-        for item in parse_Problem_Archive(text):
-            print(item)
-            write_to_file(item)
-            write_to_sql(database='spiders',table='hdu',data=item)
-            content.append(item)
-        write_to_json(content)
-        write_to_csv(content)
-        time.sleep(3)
-    browser.close()
+def specify_problem(Pro_ID):
+    data = parse_showproblem(Pro_ID)
+    print(data)
+    write_to_sql(database='spiders', table='hdu', data=data)   
       
 if __name__ == "__main__":  
+    create_dir()
     #第一次创建时使用
-    #create_database(database='spiders') 
-    #create_table(database='spiders',table='hdu')
-    main()
+#     create_database(database='spiders') 
+#     create_table(database='spiders',table='hdu')
+    
+    #input_problem()
+    specify_problem(2020)
