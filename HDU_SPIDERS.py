@@ -76,11 +76,11 @@ def write_to_csv(content):
         writer.writerows(content)
         
 def create_sql():
-    db = pymysql.connect(host='localhost',user='root',password='123456',port=3306)
+    db = pymysql.connect(host='localhost',user='root',password='root',port=3306)
     cursor = db.cursor()
     cursor.execute("CREATE DATABASE spiders DEFAULT CHARACTER SET utf8") #创建数据库spiders
     
-    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db='spiders')
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306, db='spiders')
     cursor = db.cursor() 
     sql= "CREATE TABLE HDU (Pro_ID VARCHAR(255) NOT NULL,Title VARCHAR(255) NOT NULL,Tags VARCHAR(255) NOT NULL,Ratio VARCHAR(255) NOT NULL,Link VARCHAR(255) NOT NULL)"
     cursor.execute(sql) #执行SQL语句，创建数据表HDU
@@ -93,14 +93,14 @@ def write_to_sql(data):
     sql = 'INSERT INTO {table}({keys}) VALUES ({values}) ON DUPLICATE KEY UPDATE '.format(table=table, keys=keys, values=values)
     update = ','.join(["{key} = %s".format(key=key) for key in data])
     sql += update 
-    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db='spiders')
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306, db='spiders')
     cursor = db.cursor()
     try:
         if cursor.execute(sql, tuple(data.values())*2):
-            print('Successful')
+            print('Sql insert Successfully')
             db.commit()
     except:
-        print('Failed')
+        print('Sql insert Failed')
         db.rollback()
     db.close() 
     
