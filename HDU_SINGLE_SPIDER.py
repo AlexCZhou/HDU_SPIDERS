@@ -44,11 +44,10 @@ def parse_discuss_page(Pro_ID):
         tags += re.findall(match[mat], discuss_text)
     discuss_text = str(Pro_ID) + ':\n' + discuss_text + '\nEND OF ' + str(Pro_ID) + '.\n\n'
     page = get_page(int(Pro_ID))
-    write_to_discuss(page, discuss_text)
+    write_to_discuss(path='OUTPUT',page=page,text=discuss_text)
     return set(tags) # 利用set去重
         
-def create_dir():
-    path = 'OUTPUT'
+def create_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
     else:
@@ -58,8 +57,8 @@ def get_page(Pro_ID):
     Pro_ID //= 100
     return (Pro_ID//10 - 1) * 10 + (Pro_ID%10 + 1)
     
-def write_to_discuss(page, text):
-    filename = 'OUTPUT/PAGE' + str(page) + '.txt'
+def write_to_discuss(path, page, text):
+    filename = path + '/PAGE' + str(page) + '.txt'
     with open(filename, 'a', encoding='utf-8') as f:
         f.write(text)
         
@@ -98,7 +97,6 @@ def parse_showproblem(Pro_ID):
     text = get_one_page(url)
     soup = BeautifulSoup(text, 'lxml')
     title = soup.select('tr > td > h1')[0]
-    #Total Submission(s): 938749    Accepted Submission(s): 280141
     pattern = re.compile('\(s\): (\d+).*?\(s\): (\d+)')
     Submission = re.search(pattern, text)
     Ratio = int(Submission[2].strip()) / int(Submission[1].strip()) * 100
@@ -127,7 +125,7 @@ def specify_problem(Pro_ID):
     write_to_sql(database='spiders', table='hdu', data=data)   
       
 if __name__ == "__main__":  
-    create_dir()
+    create_dir(path='OUTPUT')
     #第一次创建时使用
 #     create_database(database='spiders') 
 #     create_table(database='spiders',table='hdu')

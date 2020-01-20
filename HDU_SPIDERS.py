@@ -62,11 +62,10 @@ def parse_discuss_page(Pro_ID):
         tags += re.findall(match[mat], discuss_text)
     discuss_text = str(Pro_ID) + ':\n' + discuss_text + '\nEND OF ' + str(Pro_ID) + '.\n\n'
     page = get_page(int(Pro_ID))
-    write_to_discuss(page, discuss_text)
+    write_to_discuss(path='OUTPUT',page=page,text=discuss_text)
     return set(tags) # 利用set去重
 
-def create_dir():
-    path = 'OUTPUT'
+def create_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
     else:
@@ -76,8 +75,8 @@ def get_page(Pro_ID):
     Pro_ID //= 100
     return (Pro_ID//10 - 1) * 10 + (Pro_ID%10 + 1)
     
-def write_to_discuss(page, text):
-    filename = 'OUTPUT/PAGE' + str(page) + '.txt'
+def write_to_discuss(path, page, text):
+    filename = path + '/PAGE' + str(page) + '.txt'
     with open(filename, 'a', encoding='utf-8') as f:
         f.write(text)
         
@@ -129,7 +128,7 @@ def write_to_sql(database, table, data):
 def main():
     browser = webdriver.Chrome()
     #Problem Archive页面经动态渲染，requests无法爬取，于是利用selenum模拟浏览器操作，实现所见即所得
-    create_dir()
+    create_dir(path='OUTPUT')
     for i in range(1,2):
         url = 'http://acm.hdu.edu.cn/listproblem.php?vol=' + str(i)
         browser.get(url)
