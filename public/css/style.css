@@ -16,6 +16,7 @@ a:hover{
     color: #8F4701;
 }
 a{
+    color:#5C0D11;
     text-decoration: none;
 }
 .navigation-bar{
@@ -87,5 +88,9 @@ input[type="button"], input[type="submit"] {
 .title{
     font-size: 12pt;
     font-weight: bold;
-
+}
+.page-selector{
+    width:350px;
+    height: 30px;
+    margin: auto;
 }
