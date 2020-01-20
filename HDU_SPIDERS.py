@@ -16,8 +16,8 @@ def parse_Problem_Archive(text):
         Pro_ID = items[i].td.text #items[i]中第一个td的文本内容
         tags = parse_discuss_page(Pro_ID) 
         tags = ','.join(tags)
-        if len(tags) == 0:
-            continue
+#         if len(tags) == 0:
+#             continue
         data = {
             'Pro_ID': Pro_ID,
             'Title': items[i].a.text.strip(),
@@ -103,7 +103,7 @@ def create_database(database):
 def create_table(database, table):    
     db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db=database)
     cursor = db.cursor() 
-    sql= "CREATE TABLE " + table + " (Pro_ID VARCHAR(255) NOT NULL,Title VARCHAR(255) NOT NULL,Tags VARCHAR(255) NOT NULL,"\
+    sql= "CREATE TABLE " + table + " (Pro_ID VARCHAR(255) UNIQUE,Title VARCHAR(255) NOT NULL,Tags VARCHAR(255) NOT NULL,"\
             +"Ratio VARCHAR(255) NOT NULL,Link VARCHAR(255) NOT NULL)"
     cursor.execute(sql) #执行SQL语句，创建数据表HDU
     db.close()
@@ -125,6 +125,7 @@ def write_to_sql(database, table, data):
         db.rollback()
     db.close() 
     
+    
 def main():
     browser = webdriver.Chrome()
     #Problem Archive页面经动态渲染，requests无法爬取，于是利用selenum模拟浏览器操作，实现所见即所得
@@ -137,11 +138,11 @@ def main():
         print('正在爬取第', i, '页')
         for item in parse_Problem_Archive(text):
             print(item)
-            write_to_file(item)
+            #write_to_file(item)
             write_to_sql(database='spiders',table='hdu',data=item)
             content.append(item)
-        write_to_json(content)
-        write_to_csv(content)
+        #write_to_json(content)
+        #write_to_csv(content)
         time.sleep(3)
     browser.close()
       
