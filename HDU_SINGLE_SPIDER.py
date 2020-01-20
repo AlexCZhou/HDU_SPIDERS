@@ -70,7 +70,7 @@ def create_database(database):
 def create_table(database, table):    
     db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db=database)
     cursor = db.cursor() 
-    sql= "CREATE TABLE " + table + " (Pro_ID VARCHAR(255) NOT NULL,Title VARCHAR(255) NOT NULL,Tags VARCHAR(255) NOT NULL,"\
+    sql= "CREATE TABLE " + table + " (Pro_ID VARCHAR(255) UNIQUE,Title VARCHAR(255) NOT NULL,Tags VARCHAR(255) NOT NULL,"\
             +"Ratio VARCHAR(255) NOT NULL,Link VARCHAR(255) NOT NULL)"
     cursor.execute(sql) #执行SQL语句，创建数据表HDU
     db.close()
@@ -91,7 +91,8 @@ def write_to_sql(database, table, data):
         print('Failed')
         db.rollback()
     db.close() 
-
+     
+    
 def parse_showproblem(Pro_ID):
     url = 'http://acm.hdu.edu.cn/showproblem.php?pid=' + str(Pro_ID)
     text = get_one_page(url)
