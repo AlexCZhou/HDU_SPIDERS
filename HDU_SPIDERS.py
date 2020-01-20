@@ -96,12 +96,12 @@ def write_to_csv(content):
         writer.writerows(content)
         
 def create_database(database):
-    db = pymysql.connect(host='localhost',user='root',password='123456',port=3306)
+    db = pymysql.connect(host='localhost',user='root',password='root',port=3306)
     cursor = db.cursor()
     cursor.execute("CREATE DATABASE " + database + " DEFAULT CHARACTER SET utf8") #创建数据库spiders
     
 def create_table(database, table):    
-    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db=database)
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306, db=database)
     cursor = db.cursor() 
     sql= "CREATE TABLE " + table + " (Pro_ID VARCHAR(255) NOT NULL,Title VARCHAR(255) NOT NULL,Tags VARCHAR(255) NOT NULL,"\
             +"Ratio VARCHAR(255) NOT NULL,Link VARCHAR(255) NOT NULL)"
@@ -114,7 +114,7 @@ def write_to_sql(database, table, data):
     sql = 'INSERT INTO {table}({keys}) VALUES ({values}) ON DUPLICATE KEY UPDATE '.format(table=table, keys=keys, values=values)
     update = ','.join(["{key} = %s".format(key=key) for key in data])
     sql += update 
-    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db=database)
+    db = pymysql.connect(host='localhost', user='root', password='root', port=3306, db=database)
     cursor = db.cursor()
     try:
         if cursor.execute(sql, tuple(data.values())*2):
@@ -129,7 +129,7 @@ def main():
     browser = webdriver.Chrome()
     #Problem Archive页面经动态渲染，requests无法爬取，于是利用selenum模拟浏览器操作，实现所见即所得
     create_dir(path='OUTPUT')
-    for i in range(1,2):
+    for i in range(1,59):
         url = 'http://acm.hdu.edu.cn/listproblem.php?vol=' + str(i)
         browser.get(url)
         content = []
