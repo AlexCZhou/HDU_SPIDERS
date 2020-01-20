@@ -9,7 +9,6 @@ var con = mysql.createConnection({
     database: 'SPIDERS'
 });
 
-
 var jsonResult;
 con.connect(function (err) {
     if (err) throw err;
