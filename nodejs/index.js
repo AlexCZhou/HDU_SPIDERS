@@ -16,48 +16,57 @@ con.connect(function (err) {
     console.log("Connected!");
 });
 http.createServer(function (req, res) {
-    res.writeHead(200, {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-origin': 'http://127.0.0.1:5500'
-    });
-    var params = url.parse(req.url,true).query;
-    let sql = `select * from hdu where Pro_ID >= ${(params.page-1)*100+1000} and Pro_ID <${(params.page)*100+1000};`;
-    //let sql = `select * from hdu where Pro_ID > 2000 and Pro_ID <3000;`;
-    con.query(sql, function (err, result) {
-        if (err) throw err;
-        jsonResult = JSON.stringify(result);//把results对象转为字符串，去掉RowDataPacket
-        //console.log(jsonResult);
-        //jsonResult = JSON.parse(jsonResult);//把results字符串转为json对象
-        res.write(jsonResult);
-        res.end();
-    });
+    try {
+        res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-origin': 'http://127.0.0.1:5500'
+        });
+        var params = url.parse(req.url, true).query;
+        let sql = `select * from hdu where Pro_ID >= ${(params.page - 1) * 100 + 1000} and Pro_ID <${(params.page) * 100 + 1000};`;
+        //let sql = `select * from hdu where Pro_ID > 2000 and Pro_ID <3000;`;
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            jsonResult = JSON.stringify(result);//把results对象转为字符串，去掉RowDataPacket
+            //console.log(jsonResult);
+            //jsonResult = JSON.parse(jsonResult);//把results字符串转为json对象
+            res.write(jsonResult);
+            res.end();
+        });
+    } catch (e) {
+        console.log(e);
+        console.log("connectError");
+    }
 }).listen(8080);
 
-http.createServer(function (req, res){
-    
-    if(req.url=="/"){
-        fs.readFile("../public/index.html",(err,result)=>{
-            res.end(result);
-        })
-    }
-    if(req.url=="/css/style.css"){
-        fs.readFile("../public/css/style.css",(err,result1)=>{
-             res.end(result1);
-        })
-    }
-    if(req.url=="/script/pageSelector.js"){
-        fs.readFile("../public/script/pageSelector.js",(err,result)=>{
-             res.end(result);
-        })
-    }
-    if(req.url=="/script/mainTable.js"){
-        fs.readFile("../public/script/mainTable.js",(err,result)=>{
-             res.end(result);
-        })
-    }
-    if(req.url=="/script/main.js"){
-        fs.readFile("../public/script/main.js",(err,result)=>{
-             res.end(result);
-        })
+http.createServer(function (req, res) {
+    try {
+        if (req.url == "/") {
+            fs.readFile("../public/index.html", (err, result) => {
+                res.end(result);
+            })
+        }
+        if (req.url == "/css/style.css") {
+            fs.readFile("../public/css/style.css", (err, result1) => {
+                res.end(result1);
+            })
+        }
+        if (req.url == "/script/pageSelector.js") {
+            fs.readFile("../public/script/pageSelector.js", (err, result) => {
+                res.end(result);
+            })
+        }
+        if (req.url == "/script/mainTable.js") {
+            fs.readFile("../public/script/mainTable.js", (err, result) => {
+                res.end(result);
+            })
+        }
+        if (req.url == "/script/main.js") {
+            fs.readFile("../public/script/main.js", (err, result) => {
+                res.end(result);
+            })
+        }
+    } catch (e) {
+        console.log(e);
+        console.log("createServerError");
     }
 }).listen(80);
