@@ -94,3 +94,11 @@ input[type="button"], input[type="submit"] {
     height: 30px;
     margin: auto;
 }
+.footer{
+    min-width: 900px;
+    max-width: 1200px;
+    margin: auto;
+}
+.thead{
+    font-weight: bold;
+}
