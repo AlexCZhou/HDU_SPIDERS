@@ -45,7 +45,7 @@ http.createServer(function (req, res) {
         });
     } catch (e) {
         console.log(e);
-        console.log("CreateServerError");
+        console.log("CreateServer8080Error");
     }
 }).listen(8080);
 
@@ -63,6 +63,6 @@ http.createServer(function (req, res) {
         }
     } catch (e) {
         console.log(e);
-        console.log("CreateServerError");
+        console.log("CreateServer80Error");
     }
 }).listen(80);
