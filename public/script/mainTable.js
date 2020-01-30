@@ -2,7 +2,7 @@ var mainTableNode = document.getElementById("mainTable");
 
 function getData(page) {
     console.log(page);
-    fetch("http://127.0.0.1:8080?page="+page, {
+    fetch("http://acmhelper.zhoushouhao.com:8080?page="+page, {
         method: "get",
         mode: "cors"
     })

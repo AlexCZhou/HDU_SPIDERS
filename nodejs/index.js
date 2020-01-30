@@ -24,11 +24,10 @@ http.createServer(function (req, res) {
     try {
         res.writeHead(200, {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-origin': 'http://127.0.0.1:5500',
-            'Access-Control-Allow-origin': 'http://127.0.0.1'
+            'Access-Control-Allow-origin': 'http://acmhelper.zhoushouhao.com'
         });
         var params = url.parse(req.url, true).query;
-        let sql = `select * from hdu where Pro_ID >= ${(params.page - 1) * 100 + 1000} and Pro_ID <${(params.page) * 100 + 1000};`;
+        let sql = `select * from hdu where Pro_ID >= ${(params.page - 1) * 100 + 1000} and Pro_ID <${(params.page) * 100 + 1000} ORDER BY Pro_ID;`;
         //let sql = `select * from hdu where Pro_ID > 2000 and Pro_ID <3000;`;
         con.query(sql, function (err, result) {
             try {
