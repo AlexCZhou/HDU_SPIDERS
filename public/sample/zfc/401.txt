@@ -1,0 +1,13 @@
+第0组输入
+hello world!
+第0组输出
+hello world!
+hello world!
+
+第1组输入
+I am a student.
+第1组输出
+I am a student.
+I am a student.
+
+

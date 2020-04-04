@@ -1,0 +1,26 @@
+第0组输入
+abcdefghi123456789
+第0组输出
+abcdefghi123456789
+
+第1组输入
+s
+第1组输出
+s
+
+第2组输入
+qqqqqwwwwweeee    
+第2组输出
+qqqqqwwwwweeee    
+
+第3组输入
+  sf dh  adg
+第3组输出
+  sf dh  adg
+
+第4组输入
+@#g %jj HL* %87yyyyy
+第4组输出
+@#g %jj HL* %87yyyyy
+
+

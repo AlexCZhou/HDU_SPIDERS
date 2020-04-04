@@ -1,0 +1,36 @@
+第0组输入
+We are students
+8
+3
+第0组输出
+stu
+
+第1组输入
+We are students.
+11
+8
+第1组输出
+dents.
+
+第2组输入
+I am student 123456
+8
+3
+第2组输出
+ude
+
+第3组输入
+abc
+7
+3
+第3组输出
+
+
+第4组输入
+abc
+100
+3
+第4组输出
+
+
+

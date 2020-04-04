@@ -1,0 +1,26 @@
+第0组输入
+Windows XP 2001~
+第0组输出
+Bnsitbx CU 2001~
+
+第1组输入
+I am a student .2014
+第1组输出
+N fr f xyzijsy .2014
+
+第2组输入
+jo.mentsy.com 2014
+第2组输出
+ot.rjsyxd.htr 2014
+
+第3组输入
+VWXYZvwxyz .
+第3组输出
+ABCDEabcde .
+
+第4组输入
+       !!!!!!!!
+第4组输出
+       !!!!!!!!
+
+

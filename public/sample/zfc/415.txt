@@ -1,0 +1,21 @@
+第0组输入
+Kcocuvwfgpv 2
+第0组输出
+Iamastudent
+
+第1组输入
+ABCabc 10
+第1组输出
+QRSqrs
+
+第2组输入
+XYZxyz 15
+第2组输出
+IJKijk
+
+第3组输入
+FfxyaJFJsabcXZsg 5
+第3组输出
+AastvEAEnvwxSUnb
+
+
